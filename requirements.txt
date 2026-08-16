@@ -1,4 +1,4 @@
-﻿asttokens==3.0.2
+asttokens==3.0.2
 certifi==2026.7.22
 charset-normalizer==3.4.9
 colorama==0.4.6
