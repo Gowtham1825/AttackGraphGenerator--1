@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 850px;
+                 background-color: #111827;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#22C55E", "font": {"color": "white"}, "id": "192.168.31.1", "label": "HOST\n192.168.31.1\nRisk: LOW\nScore: 0", "shape": "box", "title": "\u003cb\u003eNetwork Host\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eIP Address: 192.168.31.1\u003cbr\u003eRisk Level: LOW\u003cbr\u003eRisk Score: 0"}, {"color": "#22C55E", "font": {"color": "white"}, "id": "192.168.31.121", "label": "HOST\n192.168.31.121\nRisk: LOW\nScore: 1", "shape": "box", "title": "\u003cb\u003eNetwork Host\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eIP Address: 192.168.31.121\u003cbr\u003eRisk Level: LOW\u003cbr\u003eRisk Score: 1"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:2869", "label": "UNKNOWN\nPort: 2869", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 2869\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:2870", "label": "UNKNOWN\nPort: 2870", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 2870\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:2874", "label": "UNKNOWN\nPort: 2874", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 2874\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:7547", "label": "UNKNOWN\nPort: 7547", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 7547\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:8008", "label": "HTTP-ALT\nPort: 8008", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 8008\u003cbr\u003eService: HTTP-ALT"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:8009", "label": "UNKNOWN\nPort: 8009", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 8009\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:8443", "label": "HTTPS-ALT\nPort: 8443", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 8443\u003cbr\u003eService: HTTPS-ALT"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:34639", "label": "UNKNOWN\nPort: 34639", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 34639\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:39033", "label": "UNKNOWN\nPort: 39033", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 39033\u003cbr\u003eService: UNKNOWN"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.121:52235", "label": "UNKNOWN\nPort: 52235", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.121\u003cbr\u003ePort: 52235\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "192.168.31.182", "label": "HOST\n192.168.31.182\nRisk: HIGH\nScore: 18", "shape": "box", "title": "\u003cb\u003eNetwork Host\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eIP Address: 192.168.31.182\u003cbr\u003eRisk Level: HIGH\u003cbr\u003eRisk Score: 18"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:135", "label": "MSRPC\nPort: 135", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 135\u003cbr\u003eService: MSRPC"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:135:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 135\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:139", "label": "NETBIOS-SSN\nPort: 139", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 139\u003cbr\u003eService: NETBIOS-SSN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:139:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 139\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:445", "label": "SMB\nPort: 445", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 445\u003cbr\u003eService: SMB"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "finding:192.168.31.182:445:SMB Service Detected", "label": "HIGH\nSMB Service Detected", "shape": "diamond", "title": "\u003cb\u003eSecurity Finding\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eSeverity: HIGH\u003cbr\u003eFinding: SMB Service Detected\u003cbr\u003e\u003cbr\u003e\u003cb\u003eReason\u003c/b\u003e\u003cbr\u003eSMB is exposed and should be restricted to trusted hosts or network segments. The service should be kept patched."}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:445:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 445\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:5040", "label": "UNKNOWN\nPort: 5040", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 5040\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:5040:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 5040\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:5432", "label": "POSTGRESQL\nPort: 5432", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 5432\u003cbr\u003eService: POSTGRESQL"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "finding:192.168.31.182:5432:PostgreSQL Service Detected", "label": "HIGH\nPostgreSQL Service Detected", "shape": "diamond", "title": "\u003cb\u003eSecurity Finding\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eSeverity: HIGH\u003cbr\u003eFinding: PostgreSQL Service Detected\u003cbr\u003e\u003cbr\u003e\u003cb\u003eReason\u003c/b\u003e\u003cbr\u003ePostgreSQL is exposed and should be restricted to trusted hosts and securely configured."}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:5432:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 5432\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:49664", "label": "UNKNOWN\nPort: 49664", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49664\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:49664:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49664\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:49665", "label": "UNKNOWN\nPort: 49665", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49665\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:49665:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49665\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:49666", "label": "UNKNOWN\nPort: 49666", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49666\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:49666:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49666\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:49667", "label": "UNKNOWN\nPort: 49667", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49667\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:49667:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49667\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:49668", "label": "UNKNOWN\nPort: 49668", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49668\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:49668:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49668\u003cbr\u003eRisk Level: HIGH"}, {"color": "#38BDF8", "font": {"color": "white"}, "id": "192.168.31.182:49670", "label": "UNKNOWN\nPort: 49670", "shape": "ellipse", "title": "\u003cb\u003eExposed Service\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49670\u003cbr\u003eService: UNKNOWN"}, {"color": "#EF4444", "font": {"color": "white"}, "id": "risk:192.168.31.182:49670:HIGH", "label": "RISK PATH\nHIGH", "shape": "star", "title": "\u003cb\u003ePotential Risk Path\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eHost: 192.168.31.182\u003cbr\u003ePort: 49670\u003cbr\u003eRisk Level: HIGH"}, {"color": "#22C55E", "font": {"color": "white"}, "id": "192.168.31.208", "label": "HOST\n192.168.31.208\nRisk: LOW\nScore: 0", "shape": "box", "title": "\u003cb\u003eNetwork Host\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eIP Address: 192.168.31.208\u003cbr\u003eRisk Level: LOW\u003cbr\u003eRisk Score: 0"}, {"color": "#22C55E", "font": {"color": "white"}, "id": "192.168.31.216", "label": "HOST\n192.168.31.216\nRisk: LOW\nScore: 0", "shape": "box", "title": "\u003cb\u003eNetwork Host\u003c/b\u003e\u003cbr\u003e\u003cbr\u003eIP Address: 192.168.31.216\u003cbr\u003eRisk Level: LOW\u003cbr\u003eRisk Score: 0"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:2869"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:2870"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:2874"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:7547"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:8008"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:8009"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:8443"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:34639"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:39033"}, {"arrows": "to", "from": "192.168.31.121", "label": "EXPOSES", "to": "192.168.31.121:52235"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:135"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:135", "label": "LEADS TO", "to": "risk:192.168.31.182:135:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:139"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:139", "label": "LEADS TO", "to": "risk:192.168.31.182:139:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:445"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:445", "label": "HAS FINDING", "to": "finding:192.168.31.182:445:SMB Service Detected"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:445", "label": "LEADS TO", "to": "risk:192.168.31.182:445:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:5040"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:5040", "label": "LEADS TO", "to": "risk:192.168.31.182:5040:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:5432"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:5432", "label": "HAS FINDING", "to": "finding:192.168.31.182:5432:PostgreSQL Service Detected"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:5432", "label": "LEADS TO", "to": "risk:192.168.31.182:5432:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:49664"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:49664", "label": "LEADS TO", "to": "risk:192.168.31.182:49664:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:49665"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:49665", "label": "LEADS TO", "to": "risk:192.168.31.182:49665:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:49666"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:49666", "label": "LEADS TO", "to": "risk:192.168.31.182:49666:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:49667"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:49667", "label": "LEADS TO", "to": "risk:192.168.31.182:49667:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:49668"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:49668", "label": "LEADS TO", "to": "risk:192.168.31.182:49668:HIGH"}, {"arrows": "to", "from": "192.168.31.182", "label": "EXPOSES", "to": "192.168.31.182:49670"}, {"arrows": "to", "color": "#EF4444", "from": "192.168.31.182:49670", "label": "LEADS TO", "to": "risk:192.168.31.182:49670:HIGH"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"nodes": {"font": {"size": 16, "face": "Arial"}, "borderWidth": 2, "shadow": true}, "edges": {"arrows": {"to": {"enabled": true, "scaleFactor": 0.7}}, "smooth": {"enabled": true, "type": "dynamic"}, "width": 2, "color": {"inherit": false}}, "physics": {"enabled": true, "barnesHut": {"gravitationalConstant": -3500, "centralGravity": 0.2, "springLength": 180, "springConstant": 0.04, "damping": 0.09}, "stabilization": {"enabled": true, "iterations": 1000, "fit": true}}, "interaction": {"hover": true, "navigationButtons": true, "keyboard": true, "dragNodes": true, "zoomView": true, "selectConnectedEdges": true}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

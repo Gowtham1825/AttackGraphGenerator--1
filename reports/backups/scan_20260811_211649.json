@@ -1,0 +1,258 @@
+{
+    "report": {
+        "name": "Attack Graph Security Assessment",
+        "version": "3.0",
+        "generated_at": "2026-08-11T21:16:49",
+        "scan_id": "20260811_211649"
+    },
+    "summary": {
+        "total_hosts": 4,
+        "risk_distribution": {
+            "LOW": 3,
+            "MEDIUM": 0,
+            "HIGH": 1,
+            "CRITICAL": 0
+        },
+        "total_open_ports": 23,
+        "total_findings": 2,
+        "finding_severity": {
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 2,
+            "CRITICAL": 0
+        }
+    },
+    "hosts": [
+        {
+            "ip": "192.168.31.121",
+            "hostname": null,
+            "os": null,
+            "open_ports": [
+                2869,
+                2870,
+                2874,
+                7547,
+                8008,
+                8009,
+                8443,
+                34639,
+                39033,
+                52235
+            ],
+            "services": [
+                {
+                    "port": 2869,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 2870,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 2874,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 7547,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 8008,
+                    "service": "HTTP-ALT"
+                },
+                {
+                    "port": 8009,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 8443,
+                    "service": "HTTPS-ALT"
+                },
+                {
+                    "port": 34639,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 39033,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 52235,
+                    "service": "UNKNOWN"
+                }
+            ],
+            "findings": [],
+            "risk": "LOW",
+            "risk_score": 1,
+            "risk_analysis": {
+                "score": 1,
+                "risk": "LOW",
+                "port_score": 1,
+                "finding_score": 0,
+                "open_ports": 10,
+                "high_risk_ports": [],
+                "finding_severity": {
+                    "LOW": 0,
+                    "MEDIUM": 0,
+                    "HIGH": 0,
+                    "CRITICAL": 0
+                }
+            }
+        },
+        {
+            "ip": "192.168.31.182",
+            "hostname": null,
+            "os": null,
+            "open_ports": [
+                135,
+                139,
+                445,
+                5040,
+                5432,
+                5500,
+                5501,
+                49664,
+                49665,
+                49666,
+                49667,
+                49668,
+                49670
+            ],
+            "services": [
+                {
+                    "port": 135,
+                    "service": "MSRPC"
+                },
+                {
+                    "port": 139,
+                    "service": "NETBIOS-SSN"
+                },
+                {
+                    "port": 445,
+                    "service": "SMB"
+                },
+                {
+                    "port": 5040,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 5432,
+                    "service": "POSTGRESQL"
+                },
+                {
+                    "port": 5500,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 5501,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49664,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49665,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49666,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49667,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49668,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49670,
+                    "service": "UNKNOWN"
+                }
+            ],
+            "findings": [
+                {
+                    "port": 445,
+                    "severity": "HIGH",
+                    "title": "SMB Service Detected",
+                    "reason": "SMB is exposed and should be restricted to trusted hosts or network segments. The service should be kept patched."
+                },
+                {
+                    "port": 5432,
+                    "severity": "HIGH",
+                    "title": "PostgreSQL Service Detected",
+                    "reason": "PostgreSQL is exposed and should be restricted to trusted hosts and securely configured."
+                }
+            ],
+            "risk": "HIGH",
+            "risk_score": 18,
+            "risk_analysis": {
+                "score": 18,
+                "risk": "HIGH",
+                "port_score": 8,
+                "finding_score": 10,
+                "open_ports": 13,
+                "high_risk_ports": [
+                    445,
+                    5432
+                ],
+                "finding_severity": {
+                    "LOW": 0,
+                    "MEDIUM": 0,
+                    "HIGH": 2,
+                    "CRITICAL": 0
+                }
+            }
+        },
+        {
+            "ip": "192.168.31.208",
+            "hostname": null,
+            "os": null,
+            "open_ports": [],
+            "services": [],
+            "findings": [],
+            "risk": "LOW",
+            "risk_score": 0,
+            "risk_analysis": {
+                "score": 0,
+                "risk": "LOW",
+                "port_score": 0,
+                "finding_score": 0,
+                "open_ports": 0,
+                "high_risk_ports": [],
+                "finding_severity": {
+                    "LOW": 0,
+                    "MEDIUM": 0,
+                    "HIGH": 0,
+                    "CRITICAL": 0
+                }
+            }
+        },
+        {
+            "ip": "192.168.31.216",
+            "hostname": null,
+            "os": null,
+            "open_ports": [],
+            "services": [],
+            "findings": [],
+            "risk": "LOW",
+            "risk_score": 0,
+            "risk_analysis": {
+                "score": 0,
+                "risk": "LOW",
+                "port_score": 0,
+                "finding_score": 0,
+                "open_ports": 0,
+                "high_risk_ports": [],
+                "finding_severity": {
+                    "LOW": 0,
+                    "MEDIUM": 0,
+                    "HIGH": 0,
+                    "CRITICAL": 0
+                }
+            }
+        }
+    ]
+}

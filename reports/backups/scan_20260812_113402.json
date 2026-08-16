@@ -1,0 +1,124 @@
+{
+    "report": {
+        "name": "Attack Graph Security Assessment",
+        "version": "3.0",
+        "generated_at": "2026-08-12T11:34:02",
+        "scan_id": "20260812_113402"
+    },
+    "summary": {
+        "total_hosts": 1,
+        "risk_distribution": {
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 1,
+            "CRITICAL": 0
+        },
+        "total_open_ports": 11,
+        "total_findings": 2,
+        "finding_severity": {
+            "LOW": 0,
+            "MEDIUM": 0,
+            "HIGH": 2,
+            "CRITICAL": 0
+        }
+    },
+    "hosts": [
+        {
+            "ip": "192.168.31.182",
+            "hostname": null,
+            "os": null,
+            "open_ports": [
+                135,
+                445,
+                5040,
+                5432,
+                5500,
+                49664,
+                49665,
+                49666,
+                49667,
+                49668,
+                49670
+            ],
+            "services": [
+                {
+                    "port": 135,
+                    "service": "MSRPC"
+                },
+                {
+                    "port": 445,
+                    "service": "SMB"
+                },
+                {
+                    "port": 5040,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 5432,
+                    "service": "POSTGRESQL"
+                },
+                {
+                    "port": 5500,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49664,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49665,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49666,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49667,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49668,
+                    "service": "UNKNOWN"
+                },
+                {
+                    "port": 49670,
+                    "service": "UNKNOWN"
+                }
+            ],
+            "findings": [
+                {
+                    "port": 445,
+                    "severity": "HIGH",
+                    "title": "SMB Service Detected",
+                    "reason": "SMB is exposed and should be restricted to trusted hosts or network segments. The service should be kept patched."
+                },
+                {
+                    "port": 5432,
+                    "severity": "HIGH",
+                    "title": "PostgreSQL Service Detected",
+                    "reason": "PostgreSQL is exposed and should be restricted to trusted hosts and securely configured."
+                }
+            ],
+            "risk": "HIGH",
+            "risk_score": 18,
+            "risk_analysis": {
+                "score": 18,
+                "risk": "HIGH",
+                "port_score": 8,
+                "finding_score": 10,
+                "open_ports": 11,
+                "high_risk_ports": [
+                    445,
+                    5432
+                ],
+                "finding_severity": {
+                    "LOW": 0,
+                    "MEDIUM": 0,
+                    "HIGH": 2,
+                    "CRITICAL": 0
+                }
+            }
+        }
+    ]
+}
