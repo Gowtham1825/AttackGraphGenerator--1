@@ -275,17 +275,32 @@ if run_scan:
 
             elif ev == "complete":
                 progress_bar.progress(1.0, text="Scan Complete!")
+                res = event.get("result", {})
+                hosts_found = res.get("hosts", [])
+                
+                if not hosts_found:
+                    st.session_state["scan_notice"] = (
+                        f"No active hosts responded on `{target_network}`. "
+                        "Note: Cloud instances (Streamlit Cloud) cannot reach private home Wi-Fi networks (192.168.x.x). "
+                        "To scan your local Wi-Fi, run the tool on your machine at `http://localhost:8501`."
+                    )
+                else:
+                    st.session_state["scan_notice"] = None
+
                 status_box.update(
-                    label="Assessment completed successfully!",
+                    label="Assessment completed!",
                     state="complete", expanded=False,
                 )
-                st.toast("Scan completed! Updating dashboard…", icon="✅")
+                st.toast("Scan completed!", icon="✅")
                 time.sleep(0.5)
                 st.rerun()
 
 # -------------------------------------------------------------------------
 # MAIN — Assessment Results
 # -------------------------------------------------------------------------
+
+if st.session_state.get("scan_notice"):
+    st.warning(st.session_state["scan_notice"], icon=":material/warning:")
 
 assessment = load_assessment_from_file(selected_assessment_file)
 
