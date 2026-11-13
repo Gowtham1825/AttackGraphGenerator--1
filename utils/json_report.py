@@ -11,7 +11,7 @@ class JsonReport:
 
     REPORT_VERSION = "3.0"
 
-    def save(self, assets):
+    def save(self, assets, target_network: str = ""):
 
         # ==========================================
         # REPORT DIRECTORIES
@@ -164,7 +164,10 @@ class JsonReport:
                     generated_at,
 
                 "scan_id":
-                    timestamp
+                    timestamp,
+
+                "target_network":
+                    target_network,
             },
 
             "summary": {

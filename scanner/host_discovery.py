@@ -52,7 +52,7 @@ class HostDiscovery:
 
             return False
 
-    def scan(self, network):
+    def scan(self, network, on_host_found=None, on_progress=None):
 
         print("\n========== HOST DISCOVERY ==========")
         print(
@@ -118,11 +118,14 @@ class HostDiscovery:
         # PARALLEL HOST DISCOVERY
         # ==========================================
 
+        completed = 0
+        total = len(ips)
+
         with Progress() as progress:
 
             task = progress.add_task(
                 "[cyan]Discovering hosts...",
-                total=len(ips)
+                total=total
             )
 
             with ThreadPoolExecutor(
@@ -151,6 +154,8 @@ class HostDiscovery:
 
                         is_online = False
 
+                    completed += 1
+
                     if is_online:
 
                         print(
@@ -162,10 +167,22 @@ class HostDiscovery:
                             ip
                         )
 
+                        if on_host_found:
+                            try:
+                                on_host_found(ip)
+                            except Exception:
+                                pass
+
                     progress.update(
                         task,
                         advance=1
                     )
+
+                    if on_progress:
+                        try:
+                            on_progress(completed, total, ip, is_online)
+                        except Exception:
+                            pass
 
         # ==========================================
         # SORT RESULTS

@@ -41,29 +41,26 @@ class PortScanner:
         finally:
             sock.close()
 
-    def scan(self, ip):
-        """Scan all TCP ports and return only open ports."""
+    def scan(self, ip, ports=None, on_port_found=None, on_progress=None):
+        """Scan TCP ports and return only open ports."""
 
         open_ports = []
 
-        total_ports = (
-            self.end_port - self.start_port + 1
-        )
+        if ports is None:
+            target_ports = list(range(
+                self.start_port,
+                self.end_port + 1
+            ))
+            port_label = f"{self.start_port}-{self.end_port}"
+        else:
+            target_ports = sorted(list(set(ports)))
+            port_label = f"{len(target_ports)} targeted ports"
+
+        total_ports = len(target_ports)
 
         print(f"\n[*] Target: {ip}")
-        print(
-            f"[*] TCP Scan: "
-            f"{self.start_port}-{self.end_port}"
-        )
-        print(
-            f"[*] Workers: {self.max_workers}"
-        )
-        print()
-
-        ports = range(
-            self.start_port,
-            self.end_port + 1
-        )
+        print(f"[*] TCP Scan: {port_label}")
+        print(f"[*] Workers: {self.max_workers}\n")
 
         with ThreadPoolExecutor(
             max_workers=self.max_workers
@@ -75,10 +72,11 @@ class PortScanner:
                     ip,
                     port
                 ): port
-                for port in ports
+                for port in target_ports
             }
 
             completed = 0
+            step_interval = max(1, total_ports // 20)
 
             for future in as_completed(futures):
 
@@ -97,13 +95,14 @@ class PortScanner:
                         f"[+] {ip}:{result} OPEN"
                     )
 
+                    if on_port_found:
+                        try:
+                            on_port_found(ip, result)
+                        except Exception:
+                            pass
+
                 # Progress every 5%
-                if (
-                    completed % max(
-                        1,
-                        total_ports // 20
-                    ) == 0
-                ):
+                if completed % step_interval == 0 or completed == total_ports:
                     progress = (
                         completed /
                         total_ports
@@ -113,6 +112,12 @@ class PortScanner:
                         f"[*] Progress: "
                         f"{progress:.0f}%"
                     )
+
+                    if on_progress:
+                        try:
+                            on_progress(completed, total_ports, progress)
+                        except Exception:
+                            pass
 
         open_ports.sort()
 

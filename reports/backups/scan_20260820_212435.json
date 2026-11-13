@@ -1,0 +1,78 @@
+{
+    "report": {
+        "name": "Attack Graph Security Assessment",
+        "version": "3.0",
+        "generated_at": "2026-08-20T21:24:35",
+        "scan_id": "20260820_212435"
+    },
+    "summary": {
+        "total_hosts": 1,
+        "risk_distribution": {
+            "LOW": 0,
+            "MEDIUM": 1,
+            "HIGH": 0,
+            "CRITICAL": 0
+        },
+        "total_open_ports": 2,
+        "total_findings": 2,
+        "finding_severity": {
+            "LOW": 1,
+            "MEDIUM": 0,
+            "HIGH": 1,
+            "CRITICAL": 0
+        }
+    },
+    "hosts": [
+        {
+            "ip": "192.0.0.2",
+            "hostname": null,
+            "os": "Network Device",
+            "open_ports": [
+                21,
+                53
+            ],
+            "services": [
+                {
+                    "port": 21,
+                    "service": "FTP"
+                },
+                {
+                    "port": 53,
+                    "service": "DNS"
+                }
+            ],
+            "findings": [
+                {
+                    "port": 21,
+                    "severity": "HIGH",
+                    "title": "FTP Service Detected",
+                    "reason": "FTP is exposed and may transmit credentials without encryption depending on configuration."
+                },
+                {
+                    "port": 53,
+                    "severity": "LOW",
+                    "title": "DNS Service Detected",
+                    "reason": "DNS is exposed on this host and should be securely configured and restricted where appropriate."
+                }
+            ],
+            "risk": "MEDIUM",
+            "risk_score": 11,
+            "risk_analysis": {
+                "score": 11,
+                "risk": "MEDIUM",
+                "port_score": 5,
+                "finding_score": 6,
+                "open_ports": 2,
+                "high_risk_ports": [
+                    21
+                ],
+                "finding_severity": {
+                    "LOW": 1,
+                    "MEDIUM": 0,
+                    "HIGH": 1,
+                    "CRITICAL": 0
+                }
+            }
+        }
+    ]
+}

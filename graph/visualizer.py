@@ -28,14 +28,15 @@ class GraphVisualizer:
     # INITIALIZATION
     # ==================================================
 
-    def __init__(self):
+    def __init__(self, cdn_resources="local"):
 
         self.net = Network(
             height="850px",
             width="100%",
             bgcolor="#111827",
             font_color="white",
-            directed=True
+            directed=True,
+            cdn_resources=cdn_resources,
         )
 
         # Track nodes and edges to avoid duplicates
@@ -370,7 +371,7 @@ class GraphVisualizer:
 
     def save(
         self,
-        filename="reports/graphs/attack_graph.html"
+        filename="reports/attack_graph.html"
     ):
 
         # Create graph directory

@@ -180,29 +180,19 @@ def main():
             # Add HOST → PORT
             visualizer.add_port(ip, port, service)
 
-        # Use findings already stored in Asset
+        # Add each finding to the port it belongs to.  A host with no
+        # services or findings must still complete normally.
         for finding in asset.vulnerabilities:
-
             finding_port = finding.get("port")
 
-        if finding_port != port:
-            continue
+            if finding_port is None:
+                continue
 
-        # Add PORT → FINDING
-        visualizer.add_finding(ip, port, finding)
+            visualizer.add_finding(ip, finding_port, finding)
 
-        # Add FINDING → RISK PATH
-        if finding.get("severity") in ["MEDIUM", "HIGH", "CRITICAL"]:
-
-            visualizer.add_risk_path(ip, port, finding.get("severity"))
-
-            # ----------------------------------
-            # Risk Path
-            # ----------------------------------
-
-            if port_findings and risk in ["MEDIUM", "HIGH", "CRITICAL"]:
-
-                visualizer.add_risk_path(ip, port, risk)
+            severity = finding.get("severity", "LOW")
+            if severity in ["MEDIUM", "HIGH", "CRITICAL"]:
+                visualizer.add_risk_path(ip, finding_port, severity)
 
     # ==========================================
     # SCAN SUMMARY
@@ -341,9 +331,9 @@ def main():
         port = path.get("port")
         risk = path.get("risk", "LOW")
 
-    if ip and port is not None:
-        if risk in ["MEDIUM", "HIGH", "CRITICAL"]:
-            visualizer.add_risk_path(ip, port, risk)
+        if ip and port is not None:
+            if risk in ["MEDIUM", "HIGH", "CRITICAL"]:
+                visualizer.add_risk_path(ip, port, risk)
 
     # ==========================================
     # JSON REPORT
@@ -351,7 +341,7 @@ def main():
 
     try:
 
-        report.save(assets)
+        report.save(assets, target_network=network)
 
         print("\nJSON Security Report Generated.")
 
@@ -369,7 +359,7 @@ def main():
 
         print("\nAttack Graph Generated Successfully!")
 
-        print("Open: " "reports/graphs/attack_graph.html")
+        print("Open: " "reports/attack_graph.html")
 
     except Exception as error:
 
