@@ -1,56 +1,33 @@
-class Edge:
-    """
-    Represents a relationship between two nodes
-    in the security attack graph.
+"""Edge model representing directed relationships in the attack graph."""
 
-    Examples:
-        HOST -> PORT
-        PORT -> SERVICE
-        PORT -> FINDING
-        FINDING -> RISK
-    """
+from typing import Dict, Any, Optional
+
+
+class Edge:
+    """Represents a directed link (e.g. EXPOSES, RUNS, HAS_FINDING) between two nodes."""
 
     def __init__(
         self,
-        source,
-        target,
-        relation,
-        risk="LOW",
-        metadata=None
+        source: str,
+        target: str,
+        relation: str,
+        risk: str = "LOW",
+        metadata: Optional[Dict[str, Any]] = None,
     ):
-
         self.source = source
         self.target = target
         self.relation = relation
-
         self.risk = risk
+        self.metadata = metadata or {}
 
-        self.metadata = (
-            metadata
-            if metadata is not None
-            else {}
-        )
-
-    def to_dict(self):
-        """
-        Convert the edge into a JSON-compatible dictionary.
-        """
-
+    def to_dict(self) -> Dict[str, Any]:
         return {
             "source": self.source,
             "target": self.target,
             "relation": self.relation,
             "risk": self.risk,
-            "metadata": self.metadata
+            "metadata": self.metadata,
         }
 
-    def __repr__(self):
-
-        return (
-            f"Edge("
-            f"source='{self.source}', "
-            f"target='{self.target}', "
-            f"relation='{self.relation}', "
-            f"risk='{self.risk}'"
-            f")"
-        )
+    def __repr__(self) -> str:
+        return f"Edge({self.source} -> {self.target} [{self.relation}])"

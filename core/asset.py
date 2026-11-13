@@ -1,69 +1,42 @@
+"""Asset model representing an individual network host."""
+
+from typing import List, Dict, Any, Optional
+
+
 class Asset:
-    """
-    Represents a discovered network asset.
+    """Represents a discovered network asset with associated ports, services, and findings."""
 
-    Stores host identity, exposed ports, detected services,
-    security findings, and calculated risk information.
-    """
+    def __init__(self, ip: str):
+        self.ip: str = ip
+        self.hostname: Optional[str] = None
+        self.os: Optional[str] = None
 
-    def __init__(self, ip):
-        self.ip = ip
-        self.hostname = None
-        self.os = None
+        self.open_ports: List[int] = []
+        self.services: List[Dict[str, Any]] = []
+        self.vulnerabilities: List[Dict[str, Any]] = []
 
-        self.open_ports = []
-        self.services = []
-        self.vulnerabilities = []
+        self.risk_score: int = 0
+        self.risk: str = "LOW"
 
-        self.risk_score = 0
-        self.risk = "LOW"
-
-    # ==========================================
-    # PORT MANAGEMENT
-    # ==========================================
-
-    def add_port(self, port):
-        """Add an open port to the asset."""
+    def add_port(self, port: int) -> None:
+        """Register an open port on the asset."""
         if port not in self.open_ports:
             self.open_ports.append(port)
 
-    # ==========================================
-    # SERVICE MANAGEMENT
-    # ==========================================
-
-    def add_service(self, service):
-        """Add a detected service to the asset."""
+    def add_service(self, service: Dict[str, Any]) -> None:
+        """Register a discovered service running on the asset."""
         if service not in self.services:
             self.services.append(service)
 
-    # ==========================================
-    # VULNERABILITY MANAGEMENT
-    # ==========================================
-
-    def add_vulnerability(self, vulnerability):
-        """Add a security finding to the asset."""
+    def add_vulnerability(self, vulnerability: Dict[str, Any]) -> None:
+        """Attach a security finding or vulnerability to the asset."""
         if vulnerability not in self.vulnerabilities:
             self.vulnerabilities.append(vulnerability)
 
-    # ==========================================
-    # RISK MANAGEMENT
-    # ==========================================
-
-    def set_risk(self, score, risk):
-        """Set the calculated risk score and risk level."""
+    def set_risk(self, score: int, risk: str) -> None:
+        """Update calculated risk score and rating."""
         self.risk_score = score
         self.risk = risk
 
-    # ==========================================
-    # REPRESENTATION
-    # ==========================================
-
-    def __repr__(self):
-        return (
-            f"Asset("
-            f"ip='{self.ip}', "
-            f"ports={self.open_ports}, "
-            f"risk='{self.risk}', "
-            f"score={self.risk_score}"
-            f")"
-        )
+    def __repr__(self) -> str:
+        return f"<Asset ip={self.ip} risk={self.risk} ports={len(self.open_ports)}>"
